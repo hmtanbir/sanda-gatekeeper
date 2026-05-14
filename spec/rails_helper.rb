@@ -26,8 +26,8 @@ RSpec.configure do |config|
   # Ensure API security is disabled for tests unless explicitly needed
   ENV["API_GATEWAY_KEY"] = nil
   ENV["USERS_API_GATEWAY_KEY"] = nil
-  ENV["API_PAYLOAD_ENCRYPTION_ENABLED"] = "false" 
- 
+  ENV["API_PAYLOAD_ENCRYPTION_ENABLED"] = "false"
+
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
 

@@ -63,4 +63,3 @@ class UsersApiService < BaseService
     { status: 503, body: { error: "Users API service unavailable", details: e.message } }
   end
 end
-
