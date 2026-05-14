@@ -1,6 +1,11 @@
 class UsersApiService < BaseService
-  BASE_URL = ENV["USERS_API_URL"]
-  GATEWAY_KEY = ENV["USERS_API_GATEWAY_KEY"]
+  def self.base_url
+    ENV["USERS_API_URL"]
+  end
+
+  def self.gateway_key
+    ENV["USERS_API_GATEWAY_KEY"]
+  end
 
   def self.register(params, headers = {})
     request(:post, "/api/v1/registration", params, headers)
@@ -37,12 +42,12 @@ class UsersApiService < BaseService
   private
 
   def self.request(method, path, params = {}, headers = {})
-    conn = connection(BASE_URL)
+    conn = connection(base_url)
 
     response = conn.send(method) do |req|
       req.url path
       req.headers.merge!(forward_headers(headers))
-      req.headers["x-api-gateway-key"] = GATEWAY_KEY if GATEWAY_KEY.present?
+      req.headers["x-api-gateway-key"] = gateway_key if gateway_key.present?
 
       if [ :post, :put, :patch ].include?(method)
         req.body = params.to_json
@@ -58,3 +63,4 @@ class UsersApiService < BaseService
     { status: 503, body: { error: "Users API service unavailable", details: e.message } }
   end
 end
+
