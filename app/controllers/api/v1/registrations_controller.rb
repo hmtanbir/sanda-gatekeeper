@@ -9,7 +9,7 @@ module Api
       private
 
       def registration_params
-        params.permit!.to_h # Forward all params to the downstream service
+        params.permit(:name, :email, :password).to_h
       end
     end
   end

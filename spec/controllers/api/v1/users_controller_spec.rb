@@ -31,7 +31,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   describe 'PATCH #update' do
     it 'calls UsersApiService.update_user' do
       expect(UsersApiService).to receive(:update_user).with('1', hash_including('email' => 'new@example.com'), any_args).and_return(service_response)
-      patch :update, params: { id: 1, email: 'new@example.com' }
+      patch :update, params: { id: 1, user: { email: 'new@example.com' } }
       expect(response.status).to eq(200)
     end
   end
@@ -39,7 +39,13 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   describe 'PATCH #update_me' do
     it 'calls UsersApiService.update_me' do
       expect(UsersApiService).to receive(:update_me).with(hash_including('email' => 'new@example.com'), any_args).and_return(service_response)
-      patch :update_me, params: { email: 'new@example.com' }
+      patch :update_me, params: { user: { email: 'new@example.com' } }
+      expect(response.status).to eq(200)
+    end
+
+   it 'calls UsersApiService.update_me with empty hash when user param is missing' do
+      expect(UsersApiService).to receive(:update_me).with({}, any_args).and_return(service_response)
+      patch :update_me
       expect(response.status).to eq(200)
     end
   end
