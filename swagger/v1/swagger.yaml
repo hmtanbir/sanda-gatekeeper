@@ -1,0 +1,212 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/registration":
+    post:
+      summary: Registers a new user
+      tags:
+      - Registration
+      security:
+      - x_api_gateway_key: []
+      parameters: []
+      responses:
+        '201':
+          description: Created successfully
+        '422':
+          description: Validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: John Doe
+                email:
+                  type: string
+                  example: john@example.com
+                password:
+                  type: string
+                  example: password123
+              required:
+              - email
+              - password
+  "/api/v1/sessions":
+    post:
+      summary: User Login
+      tags:
+      - Sessions
+      security:
+      - x_api_gateway_key: []
+      parameters: []
+      responses:
+        '200':
+          description: Logged in successfully
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: john@example.com
+                password:
+                  type: string
+                  example: password123
+              required:
+              - email
+              - password
+  "/api/v1/users":
+    get:
+      summary: Retrieves paginated users list
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+        x_api_gateway_key: []
+      parameters:
+      - name: role
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Users fetched successfully
+  "/api/v1/users/me":
+    get:
+      summary: Retrieves current logged in user details
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+        x_api_gateway_key: []
+      responses:
+        '200':
+          description: User details fetched successfully
+    patch:
+      summary: Updates current logged in user details
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+        x_api_gateway_key: []
+      parameters: []
+      responses:
+        '200':
+          description: User updated successfully
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: Jane Doe
+                    email:
+                      type: string
+                      example: jane@example.com
+                    status:
+                      type: string
+                      example: active
+  "/api/v1/users/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: User ID
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Retrieves a user
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+        x_api_gateway_key: []
+      responses:
+        '200':
+          description: User fetched successfully
+        '404':
+          description: User not found
+    patch:
+      summary: Updates a user
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+        x_api_gateway_key: []
+      parameters: []
+      responses:
+        '200':
+          description: User updated successfully
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: Jane Doe
+                    email:
+                      type: string
+                      example: jane@example.com
+                    status:
+                      type: string
+                      example: active
+    delete:
+      summary: Deletes a user
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+        x_api_gateway_key: []
+      responses:
+        '200':
+          description: User deleted successfully
+security:
+- bearer_auth: []
+- api_gateway_key: []
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: api.bdmade.dev
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+components:
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
+    x_api_gateway_key:
+      type: apiKey
+      name: x-api-gateway-key
+      in: header
