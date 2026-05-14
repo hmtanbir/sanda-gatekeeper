@@ -9,7 +9,7 @@ module Api
       private
 
       def session_params
-        params.permit!.to_h
+       params.permit(:email, :password).to_h
       end
     end
   end

@@ -34,7 +34,9 @@ module Api
       private
 
       def user_params
-        params.permit!.to_h
+        params.require(:user).permit(:name, :email, :status).to_h
+      rescue ActionController::ParameterMissing
+        {}
       end
     end
   end
