@@ -2,7 +2,7 @@ module Api
   module V1
     class UsersController < ApplicationController
       def index
-        response = UsersApiService.list_users(params.permit!.to_h, request.headers)
+        response = UsersApiService.list_users(params.permit(:role, :page, :per_page).to_h, request.headers)
         render json: response[:body], status: response[:status]
       end
 
@@ -41,3 +41,4 @@ module Api
     end
   end
 end
+
