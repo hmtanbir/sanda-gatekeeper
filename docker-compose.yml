@@ -1,0 +1,24 @@
+services:
+  gatekeeper:
+    build: .
+    container_name: sanda_gatekeeper
+    ports:
+      - ${PORT:-3000}:3000
+    networks:
+      - sanda-network
+    deploy:
+      resources:
+        limits:
+          cpus: "2.00"
+          memory: 512M
+        reservations:
+          cpus: "1.00"
+          memory: 512M
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  sanda-network:
+    driver: bridge
